@@ -144,7 +144,7 @@ function goLeft(){
 		}	
 	}
 	if(goNext) {
-		for(let i = arr.length-1;i>0;i--) {
+		for(let i = arr.length-1;i>-1;i--) {
 			for(let j = 0;j<arr[i].length-1;j++) {
 				if(arr[i][j+1].active === true) {
 					if(j === 9) {
@@ -171,7 +171,7 @@ function goRight(){
 		}	
 	}
 	if(goNext) {
-		for(let i = arr.length-1;i>0;i--) {
+		for(let i = arr.length-1;i>-1;i--) {
 			for(let j = arr[i].length-1;j>0;j--) {
 				if(arr[i][j-1].active === true) {
 					if(j === 0) {
@@ -198,7 +198,7 @@ function fullChecker(){
 			for(let k = i; i>2;i--){
 				arr[i] = JSON.parse(JSON.stringify(arr[i-1]))
 			}
-			i++
+			i=arr.length-2
 		}
 	}
 }

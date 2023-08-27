@@ -1,9 +1,0 @@
-html * {box-sizing: border-box;}
-.wrap  {padding: 50px 5px;}
-.hidden {opacity: 0; visibility: 0; width: 0; height: 0; margin: 0; padding: 0;display: block;}
-.wrap h2 {padding-left: 12px;}
-.wrap-inner {max-width: 1000px;margin: auto;}
-.accor-wrap {margin: 40px auto 0;}
-.accordion-button pre {white-space: pre-line; word-break: break-all; font-family: var(--bs-body-font-family); font-size: 16px; overflow: hidden; margin-bottom: 0;}
-.accordion-body pre {white-space: pre-line; word-break: break-all; font-family: var(--bs-body-font-family); font-size: 16px; margin-bottom: 24px;}
-.accordion-item .accordion-button {line-height: 1.5}

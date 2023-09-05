@@ -1,1 +1,247 @@
-let block={color:0,active:!1},blockedBlock={color:100,active:!1},Interval=!1,score=0,cleared=!1,arr=[];for(let i=0;i<15;i++){let r=[];for(let $=0;$<10;$++)r.push(block);arr.push(r)}function reload(){let r="";arr.forEach(($,o)=>{let e="<tr>";$.forEach(r=>{let $;e+=$=o>2?`<td class="${"color"+r.color}"></td>`:'<td class="transparent"></td>'}),e+="</tr>",r+=e}),document.querySelector(".table>tbody").innerHTML=r,document.querySelector(".score").innerHTML=score}arr.push([blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock]),window.addEventListener("load",()=>{reload(),newSessionGenerator()});const block1=[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,!0,!0,!0,!0,0,0,0],],block2=[[0,0,0,0,!0,!0,0,0,0,0],[0,0,0,0,!0,0,0,0,0,0],[0,0,0,0,!0,0,0,0,0,0],],block3=[[0,0,0,!0,!0,!0,0,0,0,0],[0,0,0,0,!0,0,0,0,0,0],[0,0,0,0,!0,0,0,0,0,0],],block4=[[0,0,0,!0,!0,!0,0,0,0,0],[0,0,0,0,0,!0,0,0,0,0],[0,0,0,0,0,!0,0,0,0,0],],blockMap=new Map;blockMap.set(0,block1),blockMap.set(1,block2),blockMap.set(2,block3),blockMap.set(3,block4);class NewBlock{constructor(){this.randomBlock=blockMap.get(this.getRandomBlock()),this.randomColor=this.getRandomColor(),this.newBlock=this.randomBlock.map(r=>r.map(r=>0!==r?{color:this.randomColor,active:!0}:{color:0,active:!1}))}getRandomBlock(){return Math.floor(4*Math.random())}getRandomColor(){return Math.floor(6*Math.random())+1}}function dead(){Interval&&clearInterval(Interval),alert("게임오버")}function goDown(){let r=!0;for(let $=0;$<arr.length;$++)for(let o=0;o<arr[$].length;o++){if(!0===arr[$][o].active&&0!==arr[3][o].color&&!1===arr[3][o].active)return dead();if(!0===arr[$][o].active&&$===arr.length-2||!0===arr[$][o].active&&0!==arr[$+1][o].color&&!1===arr[$+1][o].active){r=!1;break}}if(r){for(let e=arr.length-1;e>0;e--)for(let l=0;l<arr[e].length;l++)!0===arr[e-1][l].active&&(arr[e][l]=JSON.parse(JSON.stringify(arr[e-1][l])),arr[e-1][l]={color:0,active:!1});reload()}else fullChecker(),arr.forEach(r=>r.forEach(r=>{r.active=!1})),clearInterval(Interval),newSessionGenerator()}function goLeft(){let r=!0;for(let $=0;$<arr.length;$++)for(let o=0;o<arr[$].length;o++)if(!0===arr[$][o].active&&0===o||!0===arr[$][o].active&&0!==arr[$][o-1].color&&!1===arr[$][o-1].active){r=!1;break}if(r){for(let e=arr.length-1;e>-1;e--)for(let l=0;l<arr[e].length-1;l++)!0===arr[e][l+1].active&&(9===l?arr[e][l]={color:0,active:!1}:(arr[e][l]=JSON.parse(JSON.stringify(arr[e][l+1])),arr[e][l+1]={color:0,active:!1}));reload()}}function goRight(){let r=!0;for(let $=0;$<arr.length;$++)for(let o=0;o<arr[$].length;o++)if(!0===arr[$][o].active&&9===o||!0===arr[$][o].active&&0!==arr[$][o+1].color&&!1===arr[$][o+1].active){r=!1;break}if(r){for(let e=arr.length-1;e>-1;e--)for(let l=arr[e].length-1;l>0;l--)!0===arr[e][l-1].active&&(0===l?arr[e][l]={color:0,active:!1}:(arr[e][l]=JSON.parse(JSON.stringify(arr[e][l-1])),arr[e][l-1]={color:0,active:!1}));reload()}}function fullChecker(){for(let r=arr.length-2;r>-1;r--){let $=!0;for(let o=0;o<arr[r].length;o++)0===arr[r][o].color&&($=!1);if($){for(score+=100;r>2;r--)arr[r]=JSON.parse(JSON.stringify(arr[r-1]));r=arr.length-2}}}function newSessionGenerator(){console.log(arr);let r=new NewBlock;console.log(r.getRandomBlock());let $=r.newBlock;console.log($),arr.splice(0,3,...$),Interval&&clearInterval(Interval),Interval=setInterval(goDown,600)}Interval=setInterval(goDown,600),window.addEventListener("keydown",function(r){"ArrowDown"===r.key?goDown():"ArrowLeft"===r.key?goLeft():"ArrowRight"===r.key?goRight():r.key});
+
+let block = {
+	color: 0,
+	active: false,
+}
+let blockedBlock = {
+	color: 100,
+	active: false,
+}
+
+let Interval = false;
+let score = 0;
+let cleared = false;
+let arr = [];
+for(let i=0;i<15;i++) {
+	const row = [];
+	for(let j=0;j<10;j++) {
+		row.push(block)
+	}
+	arr.push(row)
+}
+arr.push([blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock,blockedBlock])
+
+function reload(){
+	let template = ``;
+	arr.forEach((row,idx) => {
+		let rowTemplate = `<tr>`
+		row.forEach(blank => {
+			let td;
+			if(idx > 2) {
+				td = `<td class="${'color'+blank.color}"></td>`
+			} else {
+				td = `<td class="transparent"></td>`
+			}
+			rowTemplate += td;
+		})
+		rowTemplate += `</tr>`;
+		template += rowTemplate;
+	})
+	
+	document.querySelector('.table>tbody').innerHTML = template
+	document.querySelector('.score').innerHTML = score;
+	
+}
+window.addEventListener('load', ()=>{
+	reload();
+	newSessionGenerator()
+})
+
+
+const block1 = [
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,true,true,true,true,0,0,0],
+]
+
+const block2 =[
+	[0,0,0,0,true,true,0,0,0,0],
+	[0,0,0,0,true,0,0,0,0,0],
+	[0,0,0,0,true,0,0,0,0,0],
+]
+
+const block3 = [
+	[0,0,0,true,true,true,0,0,0,0],
+	[0,0,0,0,true,0,0,0,0,0],
+	[0,0,0,0,true,0,0,0,0,0],
+]
+const block4 = [
+	[0,0,0,true,true,true,0,0,0,0],
+	[0,0,0,0,0,true,0,0,0,0],
+	[0,0,0,0,0,true,0,0,0,0],
+]
+
+
+const blockMap = new Map();
+blockMap.set(0, block1);
+blockMap.set(1, block2);
+blockMap.set(2, block3);
+blockMap.set(3, block4);
+
+
+class NewBlock {
+	constructor(){
+		this.randomBlock = blockMap.get(this.getRandomBlock());
+		this.randomColor = this.getRandomColor();
+		this.newBlock = this.randomBlock.map(e=> e.map(elm => elm !== 0 ? {color:this.randomColor,active:true} : {color:0,active:false}))
+	}
+	// 블록 모양 - 0부터 3까지의 랜덤한 정수를 생성하는 함수
+	getRandomBlock() {
+		return Math.floor(Math.random() * 4);
+	}
+	// 색깔 - 1부터 6까지의 랜덤한 정수를 생성하는 함수
+	getRandomColor() {
+		return Math.floor(Math.random() * 6) + 1;
+	}
+}
+
+function dead(){
+	if(Interval) clearInterval(Interval)
+	alert('게임오버')
+}
+
+function goDown(){
+	let goNext = true;
+	for(let i = 0;i<arr.length;i++) {
+		for(let j = 0;j<arr[i].length;j++) {
+			if(arr[i][j].active === true && arr[3][j].color !== 0 && arr[3][j].active === false) {
+				return dead()
+			} else if((arr[i][j].active === true && i === arr.length-2) || (arr[i][j].active === true && arr[i+1][j].color !== 0 && arr[i+1][j].active === false)) {
+				goNext = false
+				break
+			}
+		}	
+	}
+	if(goNext) {
+		for(let i = arr.length-1;i>0;i--) {
+			for(let j = 0;j<arr[i].length;j++) {
+				if(arr[i-1][j].active === true) {
+					arr[i][j] = JSON.parse(JSON.stringify(arr[i-1][j]));
+					arr[i-1][j] = {color:0,active:false};
+				}
+			}	
+		}
+		reload();
+	} else {
+		// 여기에 테트리스 한 칸 다됐을때 함수 추가
+		fullChecker();
+		arr.forEach(e=> e.forEach(elm => {
+			elm.active = false;
+		}))
+		clearInterval(Interval)
+		newSessionGenerator();
+	}
+}
+
+function goLeft(){
+	let goNext = true;
+	for(let i = 0;i<arr.length;i++) {
+		for(let j = 0;j<arr[i].length;j++) {
+			if((arr[i][j].active === true && j === 0) || (arr[i][j].active === true && arr[i][j-1].color !== 0 && arr[i][j-1].active === false)) {
+				goNext = false
+				break
+			}
+		}	
+	}
+	if(goNext) {
+		for(let i = arr.length-1;i>-1;i--) {
+			for(let j = 0;j<arr[i].length-1;j++) {
+				if(arr[i][j+1].active === true) {
+					if(j === 9) {
+						arr[i][j] = {color:0,active:false};
+					} else {
+						arr[i][j] = JSON.parse(JSON.stringify(arr[i][j+1]));
+						arr[i][j+1] = {color:0,active:false};
+					}
+				}
+			}	
+		}
+		reload();
+	}
+}
+
+function goRight(){
+	let goNext = true;
+	for(let i = 0;i<arr.length;i++) {
+		for(let j = 0;j<arr[i].length;j++) {
+			if((arr[i][j].active === true && j === 9) || (arr[i][j].active === true && arr[i][j+1].color !== 0 && arr[i][j+1].active === false)) {
+				goNext = false
+				break
+			}
+		}	
+	}
+	if(goNext) {
+		for(let i = arr.length-1;i>-1;i--) {
+			for(let j = arr[i].length-1;j>0;j--) {
+				if(arr[i][j-1].active === true) {
+					if(j === 0) {
+						arr[i][j] = {color:0,active:false};
+					} else {
+						arr[i][j] = JSON.parse(JSON.stringify(arr[i][j-1]));
+						arr[i][j-1] = {color:0,active:false};
+					}
+				}
+			}	
+		}
+		reload();
+	}
+}
+
+function fullChecker(){
+	for(let i=arr.length-2;i>-1;i--) {
+		let isFull = true
+		for(let j=0;j<arr[i].length;j++) {
+			if(arr[i][j].color === 0) isFull = false
+		}
+		if(isFull) {
+			score += 100;
+			for(let k = i; i>2;i--){
+				arr[i] = JSON.parse(JSON.stringify(arr[i-1]))
+			}
+			i=arr.length-2
+		}
+	}
+}
+
+
+function newSessionGenerator(){
+	console.log(arr)
+	const createNewBlock = new NewBlock();
+	console.log(createNewBlock.getRandomBlock())
+	const newBlockArray = createNewBlock.newBlock;
+	console.log(newBlockArray)
+	arr.splice(0, 3, ...newBlockArray);
+	if(Interval) clearInterval(Interval);
+	Interval  = setInterval(goDown,600)
+}
+
+Interval = setInterval(goDown,600)
+
+
+
+window.addEventListener('keydown', function(e){
+		if (e.key === 'ArrowDown') {
+        // 아래쪽 방향키 처리
+			goDown();
+    } else if (e.key === 'ArrowLeft') {
+        // 왼쪽 방향키 처리
+			goLeft();
+    } else if (e.key === 'ArrowRight') {
+        // 오른쪽 방향키 처리
+			goRight();
+    } else if (e.key === 'Enter') {
+        // 엔터 키 처리
+        // 뒤집기
+    }
+})
+
+
+
+
+
+
+
+
+
+
+

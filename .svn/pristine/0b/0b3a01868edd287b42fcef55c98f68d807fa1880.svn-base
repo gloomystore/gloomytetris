@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>test</title>
+  <style>
+		.table {
+			width: 100%;
+			max-width: 600px;
+			margin: auto;
+		}
+		
+		.table tbody tr td, .table tbody tr td.color0 {
+			border: 1px solid #000;
+			height: 50px;
+		}
+		.table tbody tr td.color1 {
+			background:  yellow;
+		}
+		.table tbody tr td.color2 {
+			background:  beige;
+		}
+		.table tbody tr td.color3 {
+			background:  pink;
+		}
+		.table tbody tr td.color4 {
+			background:  lime;
+		}
+		.table tbody tr td.color5 {
+			background:  grey;
+		}
+		.table tbody tr td.color6 {
+			background:  purple;
+		}
+		.table tbody tr td.color100 {
+			background: #000;
+		}
+		.table tbody tr td.transparent {
+			opacity: 0!important;
+			height: 1px!important;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<p class="scoreWrap">
+			<span class="score"></span>
+			<span>점</span>
+		</p>
+	</div>
+	<table class="table">
+		<colgroup>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+			<col>
+		</colgroup>
+		<tbody>
+		</tbody>
+	</table>
+</body>
+
+<script src="/test.js"></script>
+</html>

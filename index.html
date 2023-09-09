@@ -1,71 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>test</title>
   <style>
-		.table {
-			width: 100%;
-			max-width: 600px;
-			margin: auto;
-		}
-		
-		.table tbody tr td, .table tbody tr td.color0 {
-			border: 1px solid #000;
-			height: 50px;
-		}
-		.table tbody tr td.color1 {
-			background:  #ffce26;
-		}
-		.table tbody tr td.color2 {
-			background:  #ff7d26;
-		}
-		.table tbody tr td.color3 {
-			background:  #ff2626;
-		}
-		.table tbody tr td.color4 {
-			background:  #45ff26;
-		}
-		.table tbody tr td.color5 {
-			background:  #26c4ff;
-		}
-		.table tbody tr td.color6 {
-			background:  #9626ff;
-		}
-		.table tbody tr td.color100 {
-			background: #000;
-		}
-		.table tbody tr td.transparent {
-			opacity: 0!important;
-			height: 1px!important;
-		}
-	</style>
+    .table {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .table tbody tr td,
+    .table tbody tr td.color0 {
+      border: 1px solid #000;
+      height: 30px;
+    }
+
+    .table tbody tr td.color1 {
+      background: #ffce26;
+    }
+
+    .table tbody tr td.color2 {
+      background: #ff7d26;
+    }
+
+    .table tbody tr td.color3 {
+      background: #ff2626;
+    }
+
+    .table tbody tr td.color4 {
+      background: #45ff26;
+    }
+
+    .table tbody tr td.color5 {
+      background: #26c4ff;
+    }
+
+    .table tbody tr td.color6 {
+      background: #9626ff;
+    }
+
+    .table tbody tr td.color100 {
+      background: #000;
+    }
+
+    .table tbody tr td.transparent {
+      opacity: 0 !important;
+      height: 1px !important;
+    }
+    .onlySP {
+      display: none;
+    }
+    @media(max-width:500px) {
+      .table {
+        max-width: 250px;
+      }
+      .table tbody tr td{
+        height: 15px!important;
+      }
+      .onlySP {
+        display: flex;
+      }
+    }
+		@media(max-width:375px) {
+			
+    }
+  </style>
 </head>
+
 <body>
-	<div>
-		<p class="scoreWrap">
-			<span class="score"></span>
-			<span>점</span>
-		</p>
-	</div>
-	<table class="table">
-		<colgroup>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-			<col>
-		</colgroup>
-		<tbody>
-		</tbody>
-	</table>
+  <div>
+    <p class="scoreWrap">
+      <span class="score"></span>
+      <span>점</span>
+    </p>
+  </div>
+  <table class="table">
+    <colgroup>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col>
+    </colgroup>
+    <tbody>
+    </tbody>
+  </table>
+  <div class="onlySP" style="margin-top: 40px; justify-content: space-between;">
+    <div style="display: flex; flex-wrap: wrap; width: 180px;">
+      <div style="display: flex; width: 180px; flex-wrap: wrap;">
+        <div style="width: 33%;"></div>
+        <button style="width: 33%; background: beige; font-size: 34px;" onclick="rotateBlock()">&#8593;</button>
+        <div style="width: 33%"></div>
+      </div>
+      <div style="display: flex; width: 180px; flex-wrap: wrap;">
+        <button style="width: 33%; background: beige; font-size: 34px;" onclick="goLeft()">&#8592;</button>
+        <div style="width: 33%;"></div>
+        <button style="width: 33%; background: beige; font-size: 34px;" onclick="goRight()">&#8594;</button>
+      </div>
+      <div style="display: flex; width: 180px; flex-wrap: wrap;">
+        <div style="width: 33%;"></div>
+        <button style="width: 33%; background: beige; font-size: 34px;" onclick="goDown()">&#8595;</button>
+        <div style="width: 33%"></div>
+      </div>  
+    </div>
+    
+    <div>
+      <button onclick="rotateBlock()" style="font-size: 30px; display: inline-block; width: 30px;height: 30px;padding: 0;margin: 0">&#8634;</button>
+    </div>
+  </div>
 </body>
 
-<script src="./test.js"></script>
-</html>
+<script src="./test.js"></script></html>

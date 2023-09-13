@@ -6,22 +6,29 @@ let blockedBlock = {
   color: 100,
   active: false,
 }
+function getBlock(){
+  return JSON.parse(JSON.stringify(block))
+}
+function getBlockedBlock(){
+  return JSON.parse(JSON.stringify(blockedBlock))
+}
 let thisBlockType = 0;
 let Interval = false;
 let score = 0;
 let cleared = false;
 let arr = [];
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 20; i++) {
   const row = [];
   for (let j = 0; j < 10; j++) {
     row.push(block)
   }
   arr.push(row)
 }
-arr.push([blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock, blockedBlock])
+arr.push([getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlock()])
 
 function reload() {
   let template = ``;
+  console.log(arr)
   arr.forEach((row, idx) => {
     let rowTemplate = `<tr>`
     row.forEach(blank => {
@@ -127,7 +134,7 @@ function goDown() {
     for (let i = arr.length - 1; i > 0; i--) {
       for (let j = 0; j < arr[i].length; j++) {
         if (arr[i - 1][j].active === true) {
-          arr[i][j] = JSON.parse(JSON.stringify(arr[i - 1][j]));
+          arr[i][j] = getJson(arr[i - 1][j]);
           arr[i - 1][j] = {
             color: 0,
             active: false
@@ -167,7 +174,7 @@ function goLeft() {
               active: false
             };
           } else {
-            arr[i][j] = JSON.parse(JSON.stringify(arr[i][j + 1]));
+            arr[i][j] = getJson(arr[i][j + 1]);
             arr[i][j + 1] = {
               color: 0,
               active: false
@@ -200,7 +207,7 @@ function goRight() {
               active: false
             };
           } else {
-            arr[i][j] = JSON.parse(JSON.stringify(arr[i][j - 1]));
+            arr[i][j] = getJson(arr[i][j - 1]);
             arr[i][j - 1] = {
               color: 0,
               active: false
@@ -214,21 +221,43 @@ function goRight() {
 }
 
 function fullChecker() {
+  let destroyed = false;
   for (let i = arr.length - 2; i > -1; i--) {
     let isFull = true
     for (let j = 0; j < arr[i].length; j++) {
       if (arr[i][j].color === 0) isFull = false
     }
     if (isFull) {
+      destroyed = true
       score += 100;
       for (let k = i; i > 2; i--) {
-        arr[i] = JSON.parse(JSON.stringify(arr[i - 1]))
+        arr[i] = getJson(arr[i - 1])
       }
       i = arr.length - 2
     }
   }
+  if(destroyed) {
+    // 한개라도 부서진 적이 있다면 아래로 밀어내기 발동
+    for(let i=arr.length-2;i>2;i--) {
+      for(let j=0;j<arr[i].length-1;j++) {
+        let count = 0
+        while(true) {
+          count++
+          if(count > 15) break
+          else if(arr[i][j].active === false && arr[i][j].color === 0) {
+            arr[i][j] = getJson(arr[i-1][j])
+          } else {
+            break
+          }
+        }
+      }
+    }
+  }
 }
 
+function getJson(obj){
+  return JSON.parse(JSON.stringify(obj))
+}
 
 function newSessionGenerator() {
   const createNewBlock = new NewBlock();
@@ -271,31 +300,24 @@ function rotateBlock(){
       for (let i = mostTop; i < mostTop + 4; i++) {
         if(arr[i][mostLeft].active === false && arr[i][mostLeft].color !== 0) return
       }
-      for (let i = mostTop; i < mostTop + 4; i++) {
-        if(i === mostTop){
-          for (let j = mostLeft+1; j < mostTop + 5; j++) {
-            arr[i][j] === {active:false,color:0}
-          }
-        } else {
-          arr[i][mostLeft].active = true
-          arr[i][mostLeft].color = arr[mostTop][mostLeft].color
-        }
+      for (let j = mostLeft+1; j < mostLeft + 4; j++) {
+        arr[mostTop][j] = getBlock();
+      }
+      for (let i = mostTop+1; i < mostTop + 4; i++) {
+        arr[i][mostLeft] = getJson(arr[mostTop][mostLeft])
       }
       return reload();
     } else {
       //세로 타입
       for (let i = mostLeft; i < mostLeft + 4; i++) {
         if(arr[mostTop][i].active === false && arr[mostTop][i].color !== 0) return
+        else if(mostLeft > 6) return
+      }
+      for (let j = mostTop+1; j < mostTop + 4; j++) {
+        arr[j][mostLeft] = getBlock();
       }
       for (let i = mostLeft; i < mostLeft + 4; i++) {
-        if(i === mostLeft){
-          for (let j = mostTop+1; j < mostLeft + 5; j++) {
-            arr[j][i] === {active:false,color:0}
-          }
-        } else {
-          arr[mostTop][i].active = true
-          arr[mostTop][i].color = arr[mostTop][mostLeft].color
-        }
+        arr[mostTop][i] = getJson(arr[mostTop][mostLeft])
       }
       return reload();
     }
@@ -332,7 +354,6 @@ function rotateBlock(){
   }
 }
 
-
 window.addEventListener('keydown', function (e) {
   if (e.key === 'ArrowDown') {
     // 아래쪽 방향키 처리
@@ -343,7 +364,7 @@ window.addEventListener('keydown', function (e) {
   } else if (e.key === 'ArrowRight') {
     // 오른쪽 방향키 처리
     goRight();
-  } else if (e.key === 'Enter') {
+  } else if (e.key === 'Enter' || e.key === 'ArrowUp') {
     // 엔터 키 처리
     // 뒤집기
     rotateBlock();

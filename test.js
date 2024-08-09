@@ -6,6 +6,10 @@ let blockedBlock = {
   color: 100,
   active: false,
 }
+
+let HORIZONTAL_LENGTH = 10
+let VERTICAL_LENGTH = 20
+
 function getBlock(){
   return JSON.parse(JSON.stringify(block))
 }
@@ -17,9 +21,9 @@ let Interval = false;
 let score = 0;
 let cleared = false;
 let arr = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < VERTICAL_LENGTH; i++) {
   const row = [];
-  for (let j = 0; j < 10; j++) {
+  for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
     row.push(block)
   }
   arr.push(row)
@@ -28,7 +32,7 @@ arr.push([getBlockedBlock(), getBlockedBlock(), getBlockedBlock(), getBlockedBlo
 
 function reload() {
   let template = ``;
-  console.log(arr)
+//  console.log(arr)
   arr.forEach((row, idx) => {
     let rowTemplate = `<tr>`
     row.forEach(blank => {
@@ -76,6 +80,11 @@ const block4 = [
 	[0, 0, 0, 0, 0, true, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, true, 0, 0, 0, 0],
 ]
+const block5 = [
+	[0, 0, 0, 0, true, true, 0, 0, 0, 0],
+	[0, 0, 0, 0, true, true, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
 
 
 
@@ -84,6 +93,7 @@ blockMap.set(0, block1);
 blockMap.set(1, block2);
 blockMap.set(2, block3);
 blockMap.set(3, block4);
+blockMap.set(4, block5);
 
 function getBlockMap(num){
   thisBlockType = num;
@@ -102,9 +112,9 @@ class NewBlock {
       active: false
     }))
   }
-  // 블록 모양 - 0부터 3까지의 랜덤한 정수를 생성하는 함수
+  // 블록 모양 - 0부터 4까지의 랜덤한 정수를 생성하는 함수
   getRandomBlock() {
-    const ranNum = Math.floor(Math.random() * 4);
+    const ranNum = Math.floor(Math.random() * 5);
     return ranNum;
   }
   // 색깔 - 1부터 6까지의 랜덤한 정수를 생성하는 함수
@@ -121,7 +131,7 @@ function dead() {
 function goDown() {
   let goNext = true;
   for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
+    for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
       if (arr[i][j].active === true && arr[3][j].color !== 0 && arr[3][j].active === false) {
         return dead()
       } else if ((arr[i][j].active === true && i === arr.length - 2) || (arr[i][j].active === true && arr[i + 1][j].color !== 0 && arr[i + 1][j].active === false)) {
@@ -132,9 +142,9 @@ function goDown() {
   }
   if (goNext) {
     for (let i = arr.length - 1; i > 0; i--) {
-      for (let j = 0; j < arr[i].length; j++) {
+      for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
         if (arr[i - 1][j].active === true) {
-          arr[i][j] = getJson(arr[i - 1][j]);
+          arr[i][j] = getDeepCopiedObj(arr[i - 1][j]);
           arr[i - 1][j] = {
             color: 0,
             active: false
@@ -157,7 +167,7 @@ function goDown() {
 function goLeft() {
   let goNext = true;
   for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
+    for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
       if ((arr[i][j].active === true && j === 0) || (arr[i][j].active === true && arr[i][j - 1].color !== 0 && arr[i][j - 1].active === false)) {
         goNext = false
         break
@@ -166,7 +176,7 @@ function goLeft() {
   }
   if (goNext) {
     for (let i = arr.length - 1; i > -1; i--) {
-      for (let j = 0; j < arr[i].length - 1; j++) {
+      for (let j = 0; j < HORIZONTAL_LENGTH - 1; j++) {
         if (arr[i][j + 1].active === true) {
           if (j === 9) {
             arr[i][j] = {
@@ -174,7 +184,7 @@ function goLeft() {
               active: false
             };
           } else {
-            arr[i][j] = getJson(arr[i][j + 1]);
+            arr[i][j] = getDeepCopiedObj(arr[i][j + 1]);
             arr[i][j + 1] = {
               color: 0,
               active: false
@@ -190,7 +200,7 @@ function goLeft() {
 function goRight() {
   let goNext = true;
   for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
+    for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
       if ((arr[i][j].active === true && j === 9) || (arr[i][j].active === true && arr[i][j + 1].color !== 0 && arr[i][j + 1].active === false)) {
         goNext = false
         break
@@ -199,7 +209,7 @@ function goRight() {
   }
   if (goNext) {
     for (let i = arr.length - 1; i > -1; i--) {
-      for (let j = arr[i].length - 1; j > 0; j--) {
+      for (let j = HORIZONTAL_LENGTH - 1; j > 0; j--) {
         if (arr[i][j - 1].active === true) {
           if (j === 0) {
             arr[i][j] = {
@@ -207,7 +217,7 @@ function goRight() {
               active: false
             };
           } else {
-            arr[i][j] = getJson(arr[i][j - 1]);
+            arr[i][j] = getDeepCopiedObj(arr[i][j - 1]);
             arr[i][j - 1] = {
               color: 0,
               active: false
@@ -224,28 +234,31 @@ function fullChecker() {
   let destroyed = false;
   for (let i = arr.length - 2; i > -1; i--) {
     let isFull = true
-    for (let j = 0; j < arr[i].length; j++) {
-      if (arr[i][j].color === 0) isFull = false
+    for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
+      if (arr[i][j].color === 0) {
+        isFull = false
+      }
     }
     if (isFull) {
+      console.log('isFull = ', isFull, 'vertical index is = ', i)
       destroyed = true
       score += 100;
       for (let k = i; i > 2; i--) {
-        arr[i] = getJson(arr[i - 1])
+        arr[i] = getDeepCopiedObj(arr[i - 1])
       }
-      i = arr.length - 2
+      i = VERTICAL_LENGTH
     }
   }
   if(destroyed) {
     // 한개라도 부서진 적이 있다면 아래로 밀어내기 발동
     for(let i=arr.length-2;i>2;i--) {
-      for(let j=0;j<arr[i].length-1;j++) {
+      for(let j=0;j<HORIZONTAL_LENGTH-1;j++) {
         let count = 0
         while(true) {
           count++
           if(count > 15) break
           else if(arr[i][j].active === false && arr[i][j].color === 0) {
-            arr[i][j] = getJson(arr[i-1][j])
+            arr[i][j] = getDeepCopiedObj(arr[i-1][j])
           } else {
             break
           }
@@ -255,7 +268,7 @@ function fullChecker() {
   }
 }
 
-function getJson(obj){
+function getDeepCopiedObj(obj){
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -277,7 +290,7 @@ function rotateBlock(){
   let mostRight = null;
   let mostBottom = null;
   for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr[i].length; j++) {
+    for (let j = 0; j < HORIZONTAL_LENGTH; j++) {
       if ((mostBottom === null && arr[i][j].active === true) || (arr[i][j].active === true && mostBottom < i)) {
         mostBottom = i
       }
@@ -292,11 +305,12 @@ function rotateBlock(){
       }
     }
   }
-  console.log('thisBlockType',thisBlockType);
+
+  if(thisBlockType === 4) return // 네모는 회전 안함
   // 일자 타입
-  if(thisBlockType === 0) {
+  else if(thisBlockType === 0) {
     //가로 타입
-    if(arr[mostTop][mostLeft+1].active === true) {
+    if(arr?.[mostTop]?.[mostLeft+1]?.active === true) {
       for (let i = mostTop; i < mostTop + 4; i++) {
         if(arr[i][mostLeft].active === false && arr[i][mostLeft].color !== 0) return
       }
@@ -304,7 +318,7 @@ function rotateBlock(){
         arr[mostTop][j] = getBlock();
       }
       for (let i = mostTop+1; i < mostTop + 4; i++) {
-        arr[i][mostLeft] = getJson(arr[mostTop][mostLeft])
+        arr[i][mostLeft] = getDeepCopiedObj(arr[mostTop][mostLeft])
       }
       return reload();
     } else {
@@ -317,7 +331,7 @@ function rotateBlock(){
         arr[j][mostLeft] = getBlock();
       }
       for (let i = mostLeft; i < mostLeft + 4; i++) {
-        arr[mostTop][i] = getJson(arr[mostTop][mostLeft])
+        arr[mostTop][i] = getDeepCopiedObj(arr[mostTop][mostLeft])
       }
       return reload();
     }
@@ -332,7 +346,7 @@ function rotateBlock(){
       }
     }
   }
-  console.log('goNext',goNext)
+//  console.log('goNext',goNext)
   if (goNext) {
     const newArr = [
       [arr[mostBottom][mostLeft],arr[mostTop+1][mostLeft],arr[mostTop][mostLeft]],
@@ -340,7 +354,7 @@ function rotateBlock(){
       [arr[mostBottom][mostLeft+2],arr[mostTop+1][mostLeft+2],arr[mostTop][mostRight]],
     ]
     const deepNewArr = JSON.parse(JSON.stringify(newArr))
-    console.log('deepNewArr',deepNewArr)
+//    console.log('deepNewArr',deepNewArr)
     arr[mostTop][mostLeft] = deepNewArr[0][0];
     arr[mostTop][mostLeft+1] = deepNewArr[0][1];
     arr[mostTop][mostLeft+2] = deepNewArr[0][2];

@@ -1,79 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width'>
   <title>test</title>
-  <style>
-    .table {
-      width: 100%;
-      max-width: 400px;
-      margin: auto;
-    }
-
-    .table tbody tr td,
-    .table tbody tr td.color0 {
-      border: 1px solid #000;
-      height: 30px;
-    }
-
-    .table tbody tr td.color1 {
-      background: #ffce26;
-    }
-
-    .table tbody tr td.color2 {
-      background: #ff7d26;
-    }
-
-    .table tbody tr td.color3 {
-      background: #ff2626;
-    }
-
-    .table tbody tr td.color4 {
-      background: #45ff26;
-    }
-
-    .table tbody tr td.color5 {
-      background: #26c4ff;
-    }
-
-    .table tbody tr td.color6 {
-      background: #9626ff;
-    }
-
-    .table tbody tr td.color100 {
-      background: #000;
-    }
-
-    .table tbody tr td.transparent {
-      opacity: 0 !important;
-      height: 1px !important;
-    }
-    .onlySP {
-      display: none;
-    }
-    @media(max-width:500px) {
-      .table {
-        max-width: 250px;
-      }
-      .table tbody tr td{
-        height: 15px!important;
-      }
-      .onlySP {
-        display: flex;
-      }
-    }
-  </style>
+  <link rel='stylesheet' href='./index.css'>
+  <link rel="image/x-icon" href="./favicon.ico">
 </head>
 
 <body>
   <div>
-    <p class="scoreWrap">
-      <span class="score"></span>
+    <p class='scoreWrap'>
+      <span class='score'></span>
       <span>점</span>
     </p>
   </div>
-  <table class="table">
+  <table class='table'>
     <colgroup>
       <col>
       <col>
@@ -103,29 +45,29 @@
       width: 33%; background: beige; font-size: 34px;
     }
   </style>
-  <div class="onlySP" style="margin-top: 40px; justify-content: space-between;">
-    <div class="joystick">
-      <div class="joystick__keyboard">
-        <div class="joystick__key"></div>
-        <button class="joystick__key--active" onclick="rotateBlock()">&#8593;</button>
-        <div class="joystick__key"></div>
+  <div class='onlySP' style='margin-top: 40px; justify-content: space-between;'>
+    <div class='joystick'>
+      <div class='joystick__keyboard'>
+        <div class='joystick__key'></div>
+        <button class='joystick__key--active' onclick='rotateBlock()'>&#8593;</button>
+        <div class='joystick__key'></div>
       </div>
-      <div class="joystick__keyboard">
-        <button class="joystick__key--active" onclick="goLeft()">&#8592;</button>
-        <div class="joystick__key"></div>
-        <button class="joystick__key--active" onclick="goRight()">&#8594;</button>
+      <div class='joystick__keyboard'>
+        <button class='joystick__key--active' onclick='goLeft()'>&#8592;</button>
+        <div class='joystick__key'></div>
+        <button class='joystick__key--active' onclick='goRight()'>&#8594;</button>
       </div>
-      <div class="joystick__keyboard">
-        <div class="joystick__key"></div>
-        <button class="joystick__key--active" onclick="goDown()">&#8595;</button>
-        <div class="joystick__key"></div>
+      <div class='joystick__keyboard'>
+        <div class='joystick__key'></div>
+        <button class='joystick__key--active' onclick='goDown()'>&#8595;</button>
+        <div class='joystick__key'></div>
       </div>  
     </div>
     
     <div>
-      <button onclick="rotateBlock()" style="font-size: 20px; padding: 5px;">&#8634;</button>
+      <button onclick='rotateBlock()' style='font-size: 20px; padding: 5px;'>&#8634;</button>
     </div>
   </div>
 </body>
 
-<script src="./test.js"></script></html>
+<script src='./test.js'></script></html>
